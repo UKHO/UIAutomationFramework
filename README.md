@@ -104,3 +104,7 @@ public class RecoverPasswordPage : PageBase
     }
 }
 ```
+
+## Security Disclosure
+
+The UK Hydrographic Office (UKHO) collects and supplies hydrographic and geospatial data for the merchant shipping and the Royal Navy, to protect lives at sea. Maintaining the confidentially, integrity and availability of our services is paramount. Found a security bug? You might be saving a life by reporting it to us at UKHO-ITSO@ukho.gov.uk
