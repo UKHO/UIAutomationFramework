@@ -37,6 +37,7 @@ steps:
   displayName: 'Build solution **\*.sln'
   inputs:
     solution: '**\*.sln'
+    configuration: 'Release'
     maximumCpuCount: true
 
 - task: NuGetCommand@2
