@@ -1,0 +1,36 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.SpecflowSessionDependencyInjection", "UKHO.SpecflowSessionDependencyInjection\UKHO.SpecflowSessionDependencyInjection.csproj", "{9445CE4B-70D8-4C2D-8D97-7692F87957D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.SeleniumDriver", "UKHO.SeleniumWebDriver\UKHO.SeleniumDriver.csproj", "{491602FF-0357-417F-80A2-992D5E46B9EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.WebDriverInterface", "UKHO.WebDriverInterface\UKHO.WebDriverInterface.csproj", "{77B8DF0F-72F8-4F58-90FE-02169C92FA04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9445CE4B-70D8-4C2D-8D97-7692F87957D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9445CE4B-70D8-4C2D-8D97-7692F87957D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9445CE4B-70D8-4C2D-8D97-7692F87957D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9445CE4B-70D8-4C2D-8D97-7692F87957D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{491602FF-0357-417F-80A2-992D5E46B9EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{491602FF-0357-417F-80A2-992D5E46B9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{491602FF-0357-417F-80A2-992D5E46B9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{491602FF-0357-417F-80A2-992D5E46B9EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B8DF0F-72F8-4F58-90FE-02169C92FA04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B8DF0F-72F8-4F58-90FE-02169C92FA04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B8DF0F-72F8-4F58-90FE-02169C92FA04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B8DF0F-72F8-4F58-90FE-02169C92FA04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AE326AC-112E-4F0F-B6A7-E58E76D35793}
+	EndGlobalSection
+EndGlobal

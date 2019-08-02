@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9445CE4B-70D8-4C2D-8D97-7692F87957D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UKHO.SpecflowSessionDependencyInjection</RootNamespace>
+    <AssemblyName>UKHO.SpecflowSessionDependencyInjection</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <OutDir Condition=" '$(PreferredOutDir)' != '' ">$(PreferredOutDir)\</OutDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BoDi, Version=1.4.1.0, Culture=neutral, PublicKeyToken=ff7cd5ea2744b496, processorArchitecture=MSIL">
+      <HintPath>..\packages\BoDi.1.4.1\lib\net45\BoDi.dll</HintPath>
+    </Reference>
+    <Reference Include="Gherkin, Version=6.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gherkin.6.0.0\lib\net45\Gherkin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.3.0.213\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="Utf8Json, Version=1.3.7.0, Culture=neutral, PublicKeyToken=8a73d3ba7e392e27, processorArchitecture=MSIL">
+      <HintPath>..\packages\Utf8Json.1.3.7\lib\net45\Utf8Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CaptureScreenshotsAtEndIfTestFails.cs" />
+    <Compile Include="ISessionFactory.cs" />
+    <Compile Include="PageBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BaseSession.cs" />
+    <Compile Include="WebDriverSupport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UKHO.SeleniumWebDriver\UKHO.SeleniumDriver.csproj">
+      <Project>{491602FF-0357-417F-80A2-992D5E46B9EC}</Project>
+      <Name>UKHO.SeleniumDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UKHO.WebDriverInterface\UKHO.WebDriverInterface.csproj">
+      <Project>{77b8df0f-72f8-4f58-90fe-02169c92fa04}</Project>
+      <Name>UKHO.WebDriverInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PackageDir>$(SolutionDir)Package\$(Configuration)</PackageDir>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <!-- Load up the information from the assembly -->
+    <GetAssemblyIdentity AssemblyFiles="$(OutDir)$(AssemblyName).dll">
+      <Output TaskParameter="Assemblies" ItemName="OutputAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Message Text="Info: %(OutputAssemblyInfo.Version)" />
+  </Target>
+  <Target Name="Package">
+    <!-- Ensure the Package directory exists for this project -->
+    <RemoveDir Directories="$(PackageDir)" />
+    <MakeDir Directories="$(PackageDir)" />
+    <!-- Package the project -->
+    <Exec WorkingDirectory="$(SolutionDir)" Command="&quot;$(SolutionDir).nuget\NuGet.exe&quot; pack &quot;$(MSBuildProjectFullPath)&quot; -verbosity detailed -Symbols -IncludeReferencedProjects -OutputDir &quot;$(PackageDir)&quot; -Version %(OutputAssemblyInfo.Version) -Properties OutDir=&quot;$(OutDir.Trim('\\'))\\&quot;" />
+    <CreateItem Include="$(PackageDir)\**\*.*">
+      <Output TaskParameter="Include" ItemName="BuiltNugetPackages" />
+    </CreateItem>
+    <Copy SourceFiles="@(BuiltNugetPackages)" DestinationFiles="@(BuiltNugetPackages->'$(OutDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+  <Target Name="Publish" DependsOnTargets="Package">
+    <!-- Publish the nupkg to the well known NuGet server  -->
+    <Exec Command="&quot;$(SolutionDir).nuget\NuGet.exe&quot; push &quot;$(PackageDir)\UKHO.UIAutomationFramework.%(OutputAssemblyInfo.Version)*.nupkg&quot; -verbosity detailed -Source http://hweb14:90/ 8546" />
+  </Target>
+</Project>
