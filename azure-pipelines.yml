@@ -64,7 +64,7 @@ steps:
     packDestination: '$(Build.ArtifactStagingDirectory)'
 
 - powershell: |
-    nuget sign '$(Build.ArtifactStagingDirectory)/*.nupkg' -CertificatePath $(pfxLocation) -Timestamper 'http://timestamp.verisign.com/scripts/timstamp.dll' -CertificatePassword $(PFX_PASSWORD)
+    nuget sign '$(Build.ArtifactStagingDirectory)/*.nupkg' -CertificatePath $(pfxLocation) -Timestamper 'http://timestamp.verisign.com/scripts/timstamp.dll' -CertificatePassword $env:PFX_PASSWORD
   env:
     PFX_PASSWORD: $(pfxPassword)
   displayName: 'NuGet Sign'
