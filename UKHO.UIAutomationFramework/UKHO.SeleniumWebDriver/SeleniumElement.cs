@@ -55,7 +55,12 @@ namespace UKHO.SeleniumDriver
         public void DoubleClick()
         {
             var action = new Actions(webDriver);
-            action.MoveToElement(element);
+
+            if (!string.Equals(ElementType, "Option", StringComparison.InvariantCultureIgnoreCase))
+            {
+                action.MoveToElement(element);
+            }
+
             action.DoubleClick(element);
             action.Perform();
         }
@@ -68,9 +73,12 @@ namespace UKHO.SeleniumDriver
 
         private void MoveTo()
         {
-            var action = new Actions(webDriver);
-            action.MoveToElement(element);
-            action.Perform();
+            if (!string.Equals(ElementType, "Option", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var action = new Actions(webDriver);
+                action.MoveToElement(element);
+                action.Perform();
+            }
         }
 
         public void MouseOver()
