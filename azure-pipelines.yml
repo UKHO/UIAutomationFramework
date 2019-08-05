@@ -16,6 +16,20 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'ALM Key Vault'
+    keyVaultName: 'UKHOKeyvault'
+    secretsFilter: "UKHOCodeSigningCert"
+  displayName: Download secrets from Azure Key Vault
+
+- powershell: |
+    ./DeploymentScripts/New-PfxFromBase64EncodedString.ps1 `
+      -pfxString $(UKHOCodeSigningCert)
+  env:
+    pfxPassword : $(pfxPassword)
+  displayName: Generate PFX
+
 - task: PowerShell@1
   displayName: 'Apply-AssemblyVersionAndDefaults'
   inputs:
@@ -48,6 +62,12 @@ steps:
     includeReferencedProjects: true
     includeSymbols: true
     packDestination: '$(Build.ArtifactStagingDirectory)'
+
+- powershell: |
+    nuget sign '$(Build.ArtifactStagingDirectory)\*.nupkg' -CertificatePath $(pfxLocation) -Timestamper 'http://rfc3161timestamp.globalsign.com/advanced' -CertificatePassword $env:PFX_PASSWORD
+  env:
+    PFX_PASSWORD: $(pfxPassword)
+  displayName: 'NuGet Sign'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
