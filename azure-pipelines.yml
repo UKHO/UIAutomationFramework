@@ -1,4 +1,4 @@
-name: UKHO.UIAutomationFramework_3.$(date:yy)$(DayOfYear)$(rev:.r)
+name: UKHO.UIAutomationFramework_2.$(date:yy)$(DayOfYear)$(rev:.r)
 
 resources:
 - repo: self
