@@ -22,34 +22,3 @@ steps:
     scriptName: 'DeploymentScripts/Apply-AssemblyVersionAndDefaults.ps1'
 
     arguments: '-buildNumber "$(Build.BuildNumber)" -solutionDirectory "$(Build.SourcesDirectory)"'
-
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9.x'
-  inputs:
-    versionSpec: 4.9.x
-
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '**\*.sln'
-
-- task: VSBuild@1
-  displayName: 'Build solution **\*.sln'
-  inputs:
-    solution: '**\*.sln'
-    configuration: 'Release'
-    maximumCpuCount: true
-
-- task: NuGetCommand@2
-  displayName: 'NuGet pack'
-  inputs:
-    command: pack
-    packagesToPack: UKHO.UIAutomationFramework/UKHO.SpecflowSessionDependencyInjection/UKHO.SpecflowSessionDependencyInjection.csproj
-    includeReferencedProjects: true
-    includeSymbols: true
-    packDestination: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
