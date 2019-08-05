@@ -16,6 +16,20 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'Azure Live'
+    keyVaultName: 'UKHOKeyvault'
+    secretsFilter: "UKHOCodeSigningCert"
+  displayName: Download secrets from Azure Key Vault
+
+- powershell: |
+    ./generatePfx.ps1 `
+      -pfxString $(UKHOCodeSigningCert) 
+  env:
+    pfxPassword : $(password)
+  displayName: Generate PFX
+
 - task: PowerShell@1
   displayName: 'Apply-AssemblyVersionAndDefaults'
   inputs:
