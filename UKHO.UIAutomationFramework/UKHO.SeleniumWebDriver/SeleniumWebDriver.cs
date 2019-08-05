@@ -33,15 +33,16 @@ namespace UKHO.SeleniumDriver
         private const int ScriptTimeoutSeconds = 10;
         private const int DownloadToDefaultDownloads = 1;
         private readonly TimeSpan defaultWaitTimeSpan = TimeSpan.FromSeconds(15);
+        private readonly string downloadsDirectory;
         private readonly OpenQA.Selenium.IWebDriver driver;
         private bool closed;
-        private readonly bool useJsAlertCode;
+        private bool useJsAlertCode = false;
 
         public SeleniumWebDriver()
         {
             // TODO This is a little ropey for working out where FireFox will download files to, however I don't have any better options atm.
             var pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            DownloadsDirectory = Path.Combine(pathUser, "Downloads");
+            downloadsDirectory = Path.Combine(pathUser, "Downloads");
 
             driver = BuildDriver(ConfigurationManager.AppSettings["Browser"]);
             if ("true" == ConfigurationManager.AppSettings["ForceUseJsAlertCode"])
@@ -58,8 +59,14 @@ namespace UKHO.SeleniumDriver
 
         public Size WindowSize
         {
-            get => driver.Manage().Window.Size;
-            set => driver.Manage().Window.Size = value;
+            get
+            {
+                return driver.Manage().Window.Size;
+            }
+            set
+            {
+                driver.Manage().Window.Size = value;
+            }
         }
 
         public IElement FindElement(ISelector selector)
@@ -80,37 +87,19 @@ namespace UKHO.SeleniumDriver
         public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null)
         {
             return Execute(() =>
-                   {
-                       var seleniumSelector = Utils.SeleniumSelector(selector);
-                       var wait = new WebDriverWait(driver, timeout ?? defaultWaitTimeSpan);
-
-                       bool ElementDisplayed(OpenQA.Selenium.IWebDriver condition)
-                       {
-                           try
                            {
-                               var elementToBeDisplayed = driver.FindElement(seleniumSelector);
-                               return elementToBeDisplayed.Displayed;
-                           }
-                           catch (StaleElementReferenceException)
-                           {
-                               return false;
-                           }
-                           catch (NoSuchElementException)
-                           {
-                               return false;
-                           }
-                       }
-
-                       wait.Until(ElementDisplayed);
-                       return FindElements(selector).FirstOrDefault();
-                   });
+                               var seleniumSelector = Utils.SeleniumSelector(selector);
+                               var wait = new WebDriverWait(driver, timeout.HasValue ? timeout.Value : defaultWaitTimeSpan);
+                               wait.Until(ExpectedConditions.ElementIsVisible(seleniumSelector));
+                               return FindElements(selector).FirstOrDefault();
+                           });
         }
 
         public void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null)
         {
             Execute(() =>
                     {
-                        var wait = new WebDriverWait(driver, timeout ?? defaultWaitTimeSpan);
+                        var wait = new WebDriverWait(driver, timeout.HasValue ? timeout.Value : defaultWaitTimeSpan);
                         wait.Until(d => predicate(this));
                     });
         }
@@ -149,7 +138,13 @@ namespace UKHO.SeleniumDriver
             }
         }
 
-        public string DownloadsDirectory { get; }
+        public string DownloadsDirectory
+        {
+            get
+            {
+                return downloadsDirectory;
+            }
+        }
 
         public string DialogText
         {
@@ -175,19 +170,22 @@ namespace UKHO.SeleniumDriver
 
         private OpenQA.Selenium.IWebDriver BuildDriver(string browser)
         {
-            if (string.IsNullOrEmpty(browser) || !Enum.TryParse(browser, true, out Browser browserEnum))
-                return new InternetExplorerDriver();
-            switch (browserEnum)
+            Browser browserEnum;
+            if (!string.IsNullOrEmpty(browser) && Enum.TryParse(browser, true, out browserEnum))
             {
-                case Browser.Firefox:
-                    return FirefoxDriver();
-                case Browser.Chrome:
-                    return ChromeDriver();
-                case Browser.InternetExplorer:
-                    return new InternetExplorerDriver();
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (browserEnum)
+                {
+                    case Browser.Firefox:
+                        return FirefoxDriver();
+                    case Browser.Chrome:
+                        return ChromeDriver();
+                    case Browser.InternetExplorer:
+                        return new InternetExplorerDriver();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+            return new InternetExplorerDriver();
         }
 
         private FirefoxDriver FirefoxDriver()
@@ -313,12 +311,12 @@ namespace UKHO.SeleniumDriver
         {
             var tempFileName = Path.GetTempFileName();
             File.Delete(tempFileName);
-            var fileName0 = $"{tempFileName}_{RationaliseFileName(e.Message)}0.html";
-            var fileName1 = $"{tempFileName}_{RationaliseFileName(e.Message)}1.png";
-            var fileName2 = $"{tempFileName}_{RationaliseFileName(e.Message)}2.png";
+            var fileName0 = string.Format("{0}_{1}0.html", tempFileName, RationaliseFileName(e.Message));
+            var fileName1 = string.Format("{0}_{1}1.png", tempFileName, RationaliseFileName(e.Message));
+            var fileName2 = string.Format("{0}_{1}2.png", tempFileName, RationaliseFileName(e.Message));
             if (!string.IsNullOrEmpty(extraMessage))
             {
-                var fileName3 = $"{tempFileName}_{RationaliseFileName(e.Message)}3.txt";
+                var fileName3 = string.Format("{0}_{1}3.txt", tempFileName, RationaliseFileName(e.Message));
                 File.WriteAllText(fileName3, extraMessage);
             }
             try
@@ -331,13 +329,13 @@ namespace UKHO.SeleniumDriver
                 }
                 catch (Win32Exception win32E)
                 {
-                    return new WebDriverException($"{e.Message}\nScreenshots saved at {fileName1}\nFailed to capture desktop screenshot {win32E.Message}", e);
+                    return new WebDriverException(string.Format("{0}\nScreenshots saved at {1}\nFailed to capture desktop screenshot {2}", e.Message, fileName1, win32E.Message), e);
                 }
-                return new WebDriverException($"{e.Message}\nScreenshots saved at {fileName1} and {fileName2}", e);
+                return new WebDriverException(string.Format("{0}\nScreenshots saved at {1} and {2}", e.Message, fileName1, fileName2), e);
             }
             catch (Win32Exception win32E)
             {
-                return new WebDriverException($"{e.Message}\nFailed to capture desktop screenshot {win32E.Message}", e);
+                return new WebDriverException(string.Format("{0}\nFailed to capture desktop screenshot {1}", e.Message, win32E.Message), e);
             }
         }
 
@@ -353,9 +351,9 @@ namespace UKHO.SeleniumDriver
             }
         }
 
-        private static string RationaliseFileName(string p)
+        private string RationaliseFileName(string p)
         {
-            return Regex.Replace(p, "[^A-Za-z0-9]+", "_").Replace("__", "_");
+            return Regex.Replace(p, @"[^A-Za-z0-9]+", "_").Replace("__", "_");
         }
 
         private void CaptureScreenForWindow(string path)

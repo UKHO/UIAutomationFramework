@@ -1,22 +1,21 @@
 <?xml version="1.0"?>
 <package>
-    <metadata>
-        <id>UKHO.UIAutomationFramework</id>
-        <version>$version$</version>
-        <title>UKHO.UIAutomationFramework</title>
-        <authors>$author$</authors>
-        <owners>$author$</owners>
+  <metadata>
+    <id>UKHO.UIAutomationFramework</id>
+    <version>$version$</version>
+    <title>UKHO.UIAutomationFramework</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
         <projectUrl>https://github.com/UKHO/UIAutomationFramework</projectUrl>
-        <license type="expression">MIT</license>
-        <description>$description$</description>
-        <releaseNotes>
-            3.0.0 Upgrade to SpecFlow 3
-            2.0.0 Add option to pass ChromeOptions in from the App.Config. Values are ; separated
-            1.0.0 Upgrade Selenium
-            &lt; 0.1.15065 Initial release of the Spec Flow UI Automation Framework
-        </releaseNotes>
-        <copyright>$copyright$</copyright>
-        <dependencies>
-        </dependencies>
-    </metadata>
+    <license type="expression">MIT</license>
+    <description>$description$</description>
+    <releaseNotes>
+      2.0.0 Add option to pass ChromeOptions in from the App.Config. Values are ; separated
+      1.0.0 Upgrade Selenium
+      &lt; 0.1.15065 Initial release of the Spec Flow UI Automation Framework
+    </releaseNotes>
+    <copyright>$copyright$</copyright>
+    <dependencies>
+    </dependencies>
+  </metadata>
 </package>

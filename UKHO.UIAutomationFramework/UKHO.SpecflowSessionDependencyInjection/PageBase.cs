@@ -6,12 +6,20 @@ namespace UKHO.SpecflowSessionDependencyInjection
 {
     public abstract class PageBase
     {
+        private readonly ISession session;
+
         protected PageBase(ISession session)
         {
-            Session = session;
+            this.session = session;
         }
 
-        public ISession Session { get; }
+        public ISession Session
+        {
+            get
+            {
+                return session;
+            }
+        }
 
         public virtual string CurrentPageId
         {
@@ -22,7 +30,13 @@ namespace UKHO.SpecflowSessionDependencyInjection
             }
         }
 
-        public virtual string PageTitle => Session.WebDriver.FindElements(By.TagName("h1")).First().Text;
+        public virtual string PageTitle
+        {
+            get
+            {
+                return Session.WebDriver.FindElements(By.TagName("h1")).First().Text;
+            }
+        }
 
         protected string GetValue(string textBoxId)
         {

@@ -199,7 +199,7 @@ namespace UKHO.SpecflowSessionDependencyInjection
         {
             OnReset();
             ExecuteCleanupTasks();
-            sessionTitle = newSessionTitle;
+            this.sessionTitle = newSessionTitle;
         }
 
         protected virtual void OnReset()
