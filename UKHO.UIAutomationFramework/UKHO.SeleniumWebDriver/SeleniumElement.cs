@@ -56,7 +56,7 @@ namespace UKHO.SeleniumDriver
         {
             var action = new Actions(webDriver);
 
-            if (string.Equals(ElementType, "Option", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(ElementType, "Option", StringComparison.InvariantCultureIgnoreCase))
             {
                 action.MoveToElement(element);
             }
