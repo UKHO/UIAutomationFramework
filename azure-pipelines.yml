@@ -18,7 +18,7 @@ variables:
 steps:
 - task: AzureKeyVault@1
   inputs:
-    azureSubscription: 'Azure Live'
+    azureSubscription: 'ALM Key Vault'
     keyVaultName: 'UKHOKeyvault'
     secretsFilter: "UKHOCodeSigningCert"
   displayName: Download secrets from Azure Key Vault
