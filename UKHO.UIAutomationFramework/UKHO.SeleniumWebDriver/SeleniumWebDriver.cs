@@ -84,22 +84,25 @@ namespace UKHO.SeleniumDriver
             Execute(() => driver.Navigate().GoToUrl(url), true);
         }
 
-        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null)
+        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             return Execute(() =>
                            {
                                var seleniumSelector = Utils.SeleniumSelector(selector);
-                               var wait = new WebDriverWait(driver, timeout.HasValue ? timeout.Value : defaultWaitTimeSpan);
+                               var wait = new WebDriverWait( new SystemClock(), 
+                                   driver, 
+                                   timeout ?? defaultWaitTimeSpan,
+                                   pollingInterval ?? DefaultPollingInterval);
                                wait.Until(ExpectedConditions.ElementIsVisible(seleniumSelector));
                                return FindElements(selector).FirstOrDefault();
                            });
         }
 
-        public void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null)
+        public void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             Execute(() =>
                     {
-                        var wait = new WebDriverWait(driver, timeout.HasValue ? timeout.Value : defaultWaitTimeSpan);
+                        var wait = new WebDriverWait(new SystemClock(), driver, timeout ?? defaultWaitTimeSpan, pollingInterval ?? DefaultPollingInterval);
                         wait.Until(d => predicate(this));
                     });
         }
@@ -368,6 +371,8 @@ namespace UKHO.SeleniumDriver
                 bitmap.Save(path, ImageFormat.Png);
             }
         }
+
+        private TimeSpan DefaultPollingInterval => TimeSpan.FromMilliseconds(500);
 
         public void AddCookie(ICookie cookie)
         {

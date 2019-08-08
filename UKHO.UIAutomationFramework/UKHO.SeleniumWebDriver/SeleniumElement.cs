@@ -39,9 +39,9 @@ namespace UKHO.SeleniumDriver
             return element.FindElements(Utils.SeleniumSelector(selector)).Select(e => new SeleniumElement(webDriver, e));
         }
 
-        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null)
+        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            var wait = new WebDriverWait(webDriver, timeout.HasValue ? timeout.Value : TimeSpan.FromSeconds(5));
+            var wait = new WebDriverWait(new SystemClock(), webDriver, timeout ?? TimeSpan.FromSeconds(5), pollingInterval ?? DefaultPollingInterval);
             wait.Until(d => FindElements(selector).Any());
             return FindElements(selector).FirstOrDefault();
         }
@@ -178,5 +178,7 @@ namespace UKHO.SeleniumDriver
             var classes = GetAttribute("class");
             return !string.IsNullOrWhiteSpace(classes) && classes.Contains(className);
         }
+
+        private TimeSpan DefaultPollingInterval => TimeSpan.FromMilliseconds(500);
     }
 }
