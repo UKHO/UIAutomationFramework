@@ -12,7 +12,7 @@ namespace UKHO.WebDriverInterface
 
         void GoToUrl(string baseAddress);
 
-        void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null);
+        void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null, TimeSpan? pollingInterval = null);
 
         void Close();
 
