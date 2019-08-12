@@ -24,6 +24,8 @@ namespace UKHO.SeleniumDriver
             this.element = element;
         }
 
+        private TimeSpan DefaultPollingInterval => TimeSpan.FromMilliseconds(500);
+
         public void SendKeys(string keys)
         {
             element.SendKeys(keys);
@@ -39,9 +41,13 @@ namespace UKHO.SeleniumDriver
             return element.FindElements(Utils.SeleniumSelector(selector)).Select(e => new SeleniumElement(webDriver, e));
         }
 
-        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null)
+        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            var wait = new WebDriverWait(webDriver, timeout.HasValue ? timeout.Value : TimeSpan.FromSeconds(5));
+            var wait = new WebDriverWait(new SystemClock(),
+                webDriver,
+                timeout ?? TimeSpan.FromSeconds(5),
+                pollingInterval ?? DefaultPollingInterval);
+
             wait.Until(d => FindElements(selector).Any());
             return FindElements(selector).FirstOrDefault();
         }
