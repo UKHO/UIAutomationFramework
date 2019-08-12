@@ -62,6 +62,8 @@ namespace UKHO.SeleniumDriver
             set => driver.Manage().Window.Size = value;
         }
 
+        private TimeSpan DefaultPollingInterval => TimeSpan.FromMilliseconds(500);
+
         public IElement FindElement(ISelector selector)
         {
             return Execute(() => new SeleniumElement(driver, driver.FindElement(Utils.SeleniumSelector(selector))), true);
@@ -77,12 +79,15 @@ namespace UKHO.SeleniumDriver
             Execute(() => driver.Navigate().GoToUrl(url), true);
         }
 
-        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null)
+        public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             return Execute(() =>
                    {
                        var seleniumSelector = Utils.SeleniumSelector(selector);
-                       var wait = new WebDriverWait(driver, timeout ?? defaultWaitTimeSpan);
+                       var wait = new WebDriverWait(new SystemClock(),
+                           driver,
+                           timeout ?? defaultWaitTimeSpan,
+                           pollingInterval ?? DefaultPollingInterval);
 
                        bool ElementDisplayed(OpenQA.Selenium.IWebDriver condition)
                        {
@@ -106,13 +111,17 @@ namespace UKHO.SeleniumDriver
                    });
         }
 
-        public void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null)
+        public void WaitUntil(Predicate<IWebDriver> predicate, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             Execute(() =>
-                    {
-                        var wait = new WebDriverWait(driver, timeout ?? defaultWaitTimeSpan);
-                        wait.Until(d => predicate(this));
-                    });
+            {
+                var wait = new WebDriverWait(new SystemClock(),
+                    driver,
+                    timeout ?? defaultWaitTimeSpan,
+                    pollingInterval ?? DefaultPollingInterval);
+
+                wait.Until(d => predicate(this));
+            });
         }
 
         public void WaitForScripts()

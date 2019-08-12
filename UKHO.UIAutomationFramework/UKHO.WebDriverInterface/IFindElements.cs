@@ -5,7 +5,7 @@ namespace UKHO.WebDriverInterface
 {
     public interface IFindElements
     {
-        IElement WaitForElement(ISelector selector, TimeSpan? timeout = null);
+        IElement WaitForElement(ISelector selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null);
 
         IElement FindElement(ISelector selector);
 
