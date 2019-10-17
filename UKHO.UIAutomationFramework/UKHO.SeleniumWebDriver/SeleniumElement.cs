@@ -4,6 +4,7 @@ using System.Linq;
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 
 using UKHO.WebDriverInterface;
@@ -60,15 +61,20 @@ namespace UKHO.SeleniumDriver
 
         public void DoubleClick()
         {
-            var action = new Actions(webDriver);
+            var attribute = element.GetAttribute("aria-describedby");
 
-            if (!string.Equals(ElementType, "Option", StringComparison.InvariantCultureIgnoreCase))
+            if (attribute?.StartsWith("jqg_") == true)
             {
-                action.MoveToElement(element);
+                webDriver.ExecuteJavaScript(@"var clickEvent  = document.createEvent ('MouseEvents');
+                                            clickEvent.initEvent ('dblclick', true, true);
+                                            arguments[0].dispatchEvent (clickEvent);", element);
             }
-
-            action.DoubleClick(element);
-            action.Perform();
+            else
+            {
+                var action = new Actions(webDriver);
+                action.DoubleClick(element);
+                action.Perform();
+            }
         }
 
         public string GetAttribute(string attributeName)
