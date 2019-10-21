@@ -1,3 +1,5 @@
+[![Build Status](https://ukhogov.visualstudio.com/Pipelines/_apis/build/status/UKHO.UIAutomationFramework?branchName=master)](https://ukhogov.visualstudio.com/Pipelines/_build/latest?definitionId=101&branchName=master)
+
 # UKHO Browser Automation Framework
 
 The automation framework is intended to help automate the browser for automated tests. It's intended to work with SpecFlow, and by default uses Selenium as the web driver.
