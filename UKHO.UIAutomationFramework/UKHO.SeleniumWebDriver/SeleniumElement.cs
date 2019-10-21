@@ -23,6 +23,7 @@ namespace UKHO.SeleniumDriver
         }
 
         private TimeSpan DefaultPollingInterval => TimeSpan.FromMilliseconds(500);
+        private TimeSpan DefaultWaitTimeSpan => TimeSpan.FromSeconds(15);
 
         public void SendKeys(string keys)
         {
@@ -54,7 +55,29 @@ namespace UKHO.SeleniumDriver
         public void Click()
         {
             MoveTo();
-            element.Click();
+
+            TryActionWithRetryOnException<ElementClickInterceptedException>(() => element.Click());
+        }
+
+        private void TryActionWithRetryOnException<TException>(Action action) where TException : Exception
+        {
+            var wait = new WebDriverWait(new SystemClock(),
+                webDriver,
+                DefaultWaitTimeSpan,
+                DefaultPollingInterval);
+
+            wait.Until(driver =>
+            {
+                try
+                {
+                    action.Invoke();
+                    return true;
+                }
+                catch (TException)
+                {
+                    return false;
+                }
+            });
         }
 
         public void DoubleClick()
@@ -74,7 +97,7 @@ namespace UKHO.SeleniumDriver
         private bool IsJqgrid()
         {
             return element.GetAttribute("aria-describedby")?.StartsWith("jqg_") == true ||
-                   element.GetAttribute("class")?.Contains("jqgrow") == true;
+                   HasClass("jqgrow");
         }
 
         private void PerformDoubleClickWorkaroundForJqgridInChrome78()
