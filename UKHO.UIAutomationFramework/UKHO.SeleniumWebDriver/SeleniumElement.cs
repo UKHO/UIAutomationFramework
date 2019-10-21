@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
-
 using UKHO.WebDriverInterface;
-
 using By = OpenQA.Selenium.By;
 using IWebDriver = OpenQA.Selenium.IWebDriver;
 
@@ -39,7 +36,8 @@ namespace UKHO.SeleniumDriver
 
         public IEnumerable<IElement> FindElements(ISelector selector)
         {
-            return element.FindElements(Utils.SeleniumSelector(selector)).Select(e => new SeleniumElement(webDriver, e));
+            return element.FindElements(Utils.SeleniumSelector(selector))
+                .Select(e => new SeleniumElement(webDriver, e));
         }
 
         public IElement WaitForElement(ISelector selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
@@ -61,14 +59,9 @@ namespace UKHO.SeleniumDriver
 
         public void DoubleClick()
         {
-            var jqgCell = element.GetAttribute("aria-describedby")?.StartsWith("jqg_");
-            var jqgRow = element.GetAttribute("class")?.Contains("jqgrow");
-
-            if (jqgCell == true || jqgRow == true) 
+            if (IsJqgrid())
             {
-                webDriver.ExecuteJavaScript(@"var clickEvent  = document.createEvent ('MouseEvents');
-                                            clickEvent.initEvent ('dblclick', true, true);
-                                            arguments[0].dispatchEvent (clickEvent);", element);
+                PerformDoubleClickWorkaroundForJqgridInChrome78();
             }
             else
             {
@@ -76,8 +69,19 @@ namespace UKHO.SeleniumDriver
                 action.DoubleClick(element);
                 action.Perform();
             }
+        }
 
+        private bool IsJqgrid()
+        {
+            return element.GetAttribute("aria-describedby")?.StartsWith("jqg_") == true ||
+                   element.GetAttribute("class")?.Contains("jqgrow") == true;
+        }
 
+        private void PerformDoubleClickWorkaroundForJqgridInChrome78()
+        {
+            webDriver.ExecuteJavaScript(@"var clickEvent  = document.createEvent ('MouseEvents');
+                                            clickEvent.initEvent ('dblclick', true, true);
+                                            arguments[0].dispatchEvent (clickEvent);", element);
         }
 
         public string GetAttribute(string attributeName)
@@ -99,26 +103,17 @@ namespace UKHO.SeleniumDriver
         public void MouseOver()
         {
             const string JavaScript = "var evObj = document.createEvent('MouseEvents');" +
-                                "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" +
-                                "arguments[0].dispatchEvent(evObj);";
-            var js = (IJavaScriptExecutor)webDriver;
+                                      "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" +
+                                      "arguments[0].dispatchEvent(evObj);";
+            var js = (IJavaScriptExecutor) webDriver;
             js.ExecuteScript(JavaScript, element);
         }
 
-        public string Text
-        {
-            get
-            {
-                return element.Text;
-            }
-        }
+        public string Text => element.Text;
 
         public string Value
         {
-            get
-            {
-                return element.GetAttribute("value");
-            }
+            get => element.GetAttribute("value");
             set
             {
                 Click();
@@ -127,13 +122,7 @@ namespace UKHO.SeleniumDriver
             }
         }
 
-        public string ElementType
-        {
-            get
-            {
-                return element.TagName;
-            }
-        }
+        public string ElementType => element.TagName;
 
         public IElement ParentElement
         {
@@ -172,21 +161,9 @@ namespace UKHO.SeleniumDriver
             selectElement.SelectByValue(value);
         }
 
-        public bool Displayed
-        {
-            get
-            {
-                return element.Displayed;
-            }
-        }
+        public bool Displayed => element.Displayed;
 
-        public bool Enabled
-        {
-            get
-            {
-                return element.Enabled;
-            }
-        }
+        public bool Enabled => element.Enabled;
 
         public bool HasClass(string className)
         {
