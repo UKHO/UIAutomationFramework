@@ -61,9 +61,10 @@ namespace UKHO.SeleniumDriver
 
         public void DoubleClick()
         {
-            var attribute = element.GetAttribute("aria-describedby");
+            var jqgCell = element.GetAttribute("aria-describedby")?.StartsWith("jqg_");
+            var jqgRow = element.GetAttribute("class")?.Contains("jqgrow");
 
-            if (attribute?.StartsWith("jqg_") == true)
+            if (jqgCell == true || jqgRow == true) 
             {
                 webDriver.ExecuteJavaScript(@"var clickEvent  = document.createEvent ('MouseEvents');
                                             clickEvent.initEvent ('dblclick', true, true);
@@ -75,6 +76,8 @@ namespace UKHO.SeleniumDriver
                 action.DoubleClick(element);
                 action.Perform();
             }
+
+
         }
 
         public string GetAttribute(string attributeName)
