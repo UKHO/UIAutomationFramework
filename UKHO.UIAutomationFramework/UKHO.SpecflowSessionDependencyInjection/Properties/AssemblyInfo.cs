@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UKHO")]
 [assembly: AssemblyProduct("UKHO.SpecflowSessionDependencyInjection")]
-[assembly: AssemblyCopyright("Copyright © UKHO 2014")]
+[assembly: AssemblyCopyright("Copyright © UKHO 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
