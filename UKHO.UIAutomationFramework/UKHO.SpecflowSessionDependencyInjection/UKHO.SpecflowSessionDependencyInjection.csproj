@@ -5,6 +5,7 @@
     <AssemblyCompany>UK Hydrographic Office</AssemblyCompany>
     <AssemblyProduct>UKHO.SpecflowSessionDependencyInjection</AssemblyProduct>
     <AssemblyCopyright>Copyright © UK Hydrographic Office 2025</AssemblyCopyright>
+    <PackageId>UKHO.UIAutomationFramework</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Reqnroll.Tools.MsBuild.Generation" Version="2.2.1" />
