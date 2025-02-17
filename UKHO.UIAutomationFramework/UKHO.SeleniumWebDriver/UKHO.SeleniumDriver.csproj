@@ -7,9 +7,7 @@
     <AssemblyCopyright>Copyright © UK Hydrographic Office 2025</AssemblyCopyright>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Selenium.Support" Version="4.28.0" />
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Reqnroll.Tools.MsBuild.Generation" Version="2.2.1" />
+    <PackageReference Include="Selenium.Support" Version="4.28.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
