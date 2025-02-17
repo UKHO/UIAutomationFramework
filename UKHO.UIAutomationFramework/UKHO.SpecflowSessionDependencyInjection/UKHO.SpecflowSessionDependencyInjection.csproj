@@ -16,4 +16,14 @@
     <ProjectReference Include="..\UKHO.SeleniumWebDriver\UKHO.SeleniumDriver.csproj" />
     <ProjectReference Include="..\UKHO.WebDriverInterface\UKHO.WebDriverInterface.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\UKHO.SeleniumWebDriver\bin\$(Configuration)\$(TargetFramework)\UKHO.SeleniumDriver.dll">
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework);ref\$(TargetFramework)</PackagePath>
+    </None>
+    <None Include="..\UKHO.WebDriverInterface\bin\$(Configuration)\$(TargetFramework)\UKHO.WebDriverInterface.dll">
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework);ref\$(TargetFramework)</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
