@@ -62,7 +62,7 @@ steps:
   displayName: 'NuGet pack'
   inputs:
     command: pack
-    packagesToPack: UKHO.UIAutomationFramework/UKHO.SpecflowSessionDependencyInjection/UKHO.SpecflowSessionDependencyInjection.nuspec
+    packagesToPack: UKHO.UIAutomationFramework/UKHO.SpecflowSessionDependencyInjection/UKHO.SpecflowSessionDependencyInjection.csproj
     includeSymbols: true
     packDirectory: '$(Build.ArtifactStagingDirectory)'
 
