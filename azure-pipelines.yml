@@ -4,6 +4,9 @@ resources:
 - repo: self
   clean: true
 
+workspace:
+   clean: all
+
 trigger:
   branches:
     include:
@@ -55,14 +58,13 @@ steps:
     configuration: 'Release'
     maximumCpuCount: true
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: 'NuGet pack'
   inputs:
     command: pack
     packagesToPack: UKHO.UIAutomationFramework/UKHO.SpecflowSessionDependencyInjection/UKHO.SpecflowSessionDependencyInjection.csproj
-    includeReferencedProjects: true
     includeSymbols: true
-    packDestination: '$(Build.ArtifactStagingDirectory)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
 
 - powershell: |
     nuget sign '$(Build.ArtifactStagingDirectory)\*.nupkg' -CertificatePath $(pfxLocation) -Timestamper 'http://rfc3161timestamp.globalsign.com/advanced' -CertificatePassword $env:PFX_PASSWORD
