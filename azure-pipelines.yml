@@ -1,8 +1,8 @@
-name: UKHO.UIAutomationFramework_3.$(date:yy)$(DayOfYear)$(rev:.r)
+name: UKHO.UIAutomationFramework_4.$(date:yy)$(DayOfYear)$(rev:.r)
 
 resources:
 - repo: self
-  clean: all
+  clean: true
 
 trigger:
   branches:
@@ -16,7 +16,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: AzureKeyVault@1
+- task: AzureKeyVault@2
   inputs:
     azureSubscription: 'Shared Services Live'
     keyVaultName: 'm-centralcertificates-kv'
@@ -30,17 +30,18 @@ steps:
     pfxPassword : $(pfxPassword)
   displayName: Generate PFX
 
-- task: PowerShell@1
+- task: PowerShell@2
   displayName: 'Apply-AssemblyVersionAndDefaults'
   inputs:
-    scriptName: 'DeploymentScripts/Apply-AssemblyVersionAndDefaults.ps1'
-
+    targetType: 'filePath'
+    filePath: 'DeploymentScripts/Apply-AssemblyVersionAndDefaults.ps1'
     arguments: '-buildNumber "$(Build.BuildNumber)" -solutionDirectory "$(Build.SourcesDirectory)"'
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9.x'
+- task: NuGetToolInstaller@1
+  displayName: 'Use NuGet 6.x'
   inputs:
-    versionSpec: 4.9.x
+    versionSpec: 6.x
+    checkLatest: true
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
