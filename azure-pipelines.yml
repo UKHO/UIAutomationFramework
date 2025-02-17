@@ -18,14 +18,14 @@ variables:
 steps:
 - task: AzureKeyVault@1
   inputs:
-    azureSubscription: 'ALM Key Vault'
-    keyVaultName: 'UKHOKeyvault'
-    secretsFilter: "UKHOCodeSigningCert"
+    azureSubscription: 'Shared Services Key Vault'
+    keyVaultName: 'm-centralcertificates-kv'
+    secretsFilter: "UKHOCodeSigningExpAug2027"
   displayName: Download secrets from Azure Key Vault
 
 - powershell: |
     ./DeploymentScripts/New-PfxFromBase64EncodedString.ps1 `
-      -pfxString $(UKHOCodeSigningCert)
+      -pfxString $(UKHOCodeSigningExpAug2027)
   env:
     pfxPassword : $(pfxPassword)
   displayName: Generate PFX
