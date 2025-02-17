@@ -150,7 +150,7 @@ namespace UKHO.SeleniumDriver
             {
                 var takesScreenshot = (ITakesScreenshot)driver;
                 var ss = takesScreenshot.GetScreenshot();
-                ss.SaveAsFile(path, ScreenshotImageFormat.Png);
+                ss.SaveAsFile(path);
             }
             catch (Exception)
             {
