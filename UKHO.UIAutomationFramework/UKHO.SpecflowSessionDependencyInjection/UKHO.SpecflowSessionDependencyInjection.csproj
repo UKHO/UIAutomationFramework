@@ -14,8 +14,8 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UKHO.SeleniumWebDriver\UKHO.SeleniumDriver.csproj" />
-    <ProjectReference Include="..\UKHO.WebDriverInterface\UKHO.WebDriverInterface.csproj" />
+    <ProjectReference Include="..\UKHO.SeleniumWebDriver\UKHO.SeleniumDriver.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\UKHO.WebDriverInterface\UKHO.WebDriverInterface.csproj" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\UKHO.SeleniumWebDriver\bin\$(Configuration)\$(TargetFramework)\UKHO.SeleniumDriver.dll">
