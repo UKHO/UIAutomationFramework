@@ -20,7 +20,11 @@
     <ProjectReference Include="..\UKHO.WebDriverInterface\UKHO.WebDriverInterface.csproj" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UKHO.SeleniumWebDriver\bin\$(Configuration)\$(TargetFramework)\UKHO.SeleniumDriver.dll">
+    <None Include="bin\$(Configuration)\$(TargetFramework)\UKHO.SpecflowSessionDependencyInjection.dll">
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework);ref\$(TargetFramework)</PackagePath>
+    </None>
+      <None Include="..\UKHO.SeleniumWebDriver\bin\$(Configuration)\$(TargetFramework)\UKHO.SeleniumDriver.dll">
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework);ref\$(TargetFramework)</PackagePath>
     </None>
