@@ -1,8 +1,11 @@
-name: UKHO.UIAutomationFramework_3.$(date:yy)$(DayOfYear)$(rev:.r)
+name: UKHO.UIAutomationFramework_4.$(date:yy)$(DayOfYear)$(rev:.r)
 
 resources:
 - repo: self
-  clean: all
+  clean: true
+
+workspace:
+   clean: all
 
 trigger:
   branches:
@@ -16,31 +19,32 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: AzureKeyVault@1
+- task: AzureKeyVault@2
   inputs:
-    azureSubscription: 'ALM Key Vault'
-    keyVaultName: 'UKHOKeyvault'
-    secretsFilter: "UKHOCodeSigningCert"
+    azureSubscription: 'Shared Services Live'
+    keyVaultName: 'm-centralcertificates-kv'
+    secretsFilter: "UKHOCodeSigningExpAug2027"
   displayName: Download secrets from Azure Key Vault
 
 - powershell: |
     ./DeploymentScripts/New-PfxFromBase64EncodedString.ps1 `
-      -pfxString $(UKHOCodeSigningCert)
+      -pfxString $(UKHOCodeSigningExpAug2027)
   env:
     pfxPassword : $(pfxPassword)
   displayName: Generate PFX
 
-- task: PowerShell@1
+- task: PowerShell@2
   displayName: 'Apply-AssemblyVersionAndDefaults'
   inputs:
-    scriptName: 'DeploymentScripts/Apply-AssemblyVersionAndDefaults.ps1'
-
+    targetType: 'filePath'
+    filePath: 'DeploymentScripts/Apply-AssemblyVersionAndDefaults.ps1'
     arguments: '-buildNumber "$(Build.BuildNumber)" -solutionDirectory "$(Build.SourcesDirectory)"'
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9.x'
+- task: NuGetToolInstaller@1
+  displayName: 'Use NuGet 6.x'
   inputs:
-    versionSpec: 4.9.x
+    versionSpec: 6.x
+    checkLatest: true
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
@@ -54,14 +58,13 @@ steps:
     configuration: 'Release'
     maximumCpuCount: true
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: 'NuGet pack'
   inputs:
     command: pack
     packagesToPack: UKHO.UIAutomationFramework/UKHO.SpecflowSessionDependencyInjection/UKHO.SpecflowSessionDependencyInjection.csproj
-    includeReferencedProjects: true
     includeSymbols: true
-    packDestination: '$(Build.ArtifactStagingDirectory)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
 
 - powershell: |
     nuget sign '$(Build.ArtifactStagingDirectory)\*.nupkg' -CertificatePath $(pfxLocation) -Timestamper 'http://rfc3161timestamp.globalsign.com/advanced' -CertificatePassword $env:PFX_PASSWORD

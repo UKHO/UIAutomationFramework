@@ -1,8 +1,7 @@
 ﻿using System.Configuration;
 
-using BoDi;
-
-using TechTalk.SpecFlow;
+using Reqnroll;
+using Reqnroll.BoDi;
 
 namespace UKHO.SpecflowSessionDependencyInjection
 {
